@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'gradle-one-jar'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+
+sourceCompatibility = 1.7
+version = '1.0'
+
+//    version = 'git describe --tags'.execute().text.trim()
+//int versionStartsAt = version.lastIndexOf("-g")
+//if (versionStartsAt > 0) {
+//    version = version.substring(0, versionStartsAt)
+//}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    String camelVersion = '2.9.2'
+    compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
+    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
+    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
+}
+
+task packJarWithLibs(type: OneJar) {
+    mainClass = 'org.loadbalancer.LoadBalancer'
+    archiveName = "LoadBalancer.jar"
+}
