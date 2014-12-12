@@ -8,7 +8,7 @@
 //}
 
 apply plugin: 'java'
-apply from: 'https://raw.github.com/akhikhl/gradle-onejar/master/pluginScripts/gradle-onejar.plugin'
+apply from: 'gradle-onejar.plugin'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
