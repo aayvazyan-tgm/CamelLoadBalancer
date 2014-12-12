@@ -16,7 +16,7 @@ public class LoadBalancer {
 			//Main.main(args);
 			OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
 					OperatingSystemMXBean.class);
-			while(true) {
+			for (int i = 0; i < 20; i++) {
 				// What % CPU load this current JVM is taking, from 0.0-1.0
 				System.out.println("ProcessLoad:" + osBean.getProcessCpuLoad());
 

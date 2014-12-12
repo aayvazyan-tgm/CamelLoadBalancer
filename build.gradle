@@ -1,14 +1,14 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
-    }
-}
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+//    }
+//}
 
 apply plugin: 'java'
-apply plugin: 'gradle-one-jar'
+apply from: 'https://raw.github.com/akhikhl/gradle-onejar/master/pluginScripts/gradle-onejar.plugin'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
@@ -34,7 +34,6 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
 }
 
-task packJarWithLibs(type: OneJar) {
+ext {
     mainClass = 'org.loadbalancer.LoadBalancer'
-    archiveName = "LoadBalancer.jar"
 }
