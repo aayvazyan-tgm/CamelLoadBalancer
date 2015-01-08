@@ -8,19 +8,15 @@
 //}
 
 apply plugin: 'java'
-apply from: 'gradle-onejar.plugin'
+apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-
-sourceCompatibility = 1.7
+archivesBaseName = 'apache-camel-Load-Balancer'
+mainClassName = 'org.loadbalancer.LoadBalancer'
 version = '1.0'
+sourceCompatibility = 1.7
 
-//    version = 'git describe --tags'.execute().text.trim()
-//int versionStartsAt = version.lastIndexOf("-g")
-//if (versionStartsAt > 0) {
-//    version = version.substring(0, versionStartsAt)
-//}
 
 repositories {
     mavenCentral()
@@ -29,11 +25,20 @@ repositories {
 dependencies {
     String camelVersion = '2.9.2'
     compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
-    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
-    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
+//    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
+//    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
 }
 
-ext {
-    mainClass = 'org.loadbalancer.LoadBalancer'
+task packJarWithLibs(type: Jar, dependsOn: jar) {
+    from files(sourceSets.main.output.classesDir)
+    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
 }
