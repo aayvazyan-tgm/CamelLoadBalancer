@@ -1,16 +1,8 @@
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//    }
-//    dependencies {
-//        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
-//    }
-//}
-
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'jetty'
 
 archivesBaseName = 'apache-camel-Load-Balancer'
 mainClassName = 'org.loadbalancer.LoadBalancer'
@@ -25,8 +17,10 @@ repositories {
 dependencies {
     String camelVersion = '2.14.1'
     compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
+    compile group: 'org.apache.camel', name: 'camel-http', version: camelVersion
+    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
 //    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
-//    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
+    //compile 'org.apache.camel:camel-mina:2.14.1' //For tcp connections
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
 }
 
