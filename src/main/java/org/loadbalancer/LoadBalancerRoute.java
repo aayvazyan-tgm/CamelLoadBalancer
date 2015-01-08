@@ -14,7 +14,9 @@ public class LoadBalancerRoute extends RouteBuilder {
     private static final String SERVER2_URL = "http://localhost:8081";
 
 
-    private String[] destinations;
+    private String[] destinations={"http://www.google.com?bridgeEndpoint=true",
+            "http://www.bing.com?bridgeEndpoint=true",
+            "http://www.duckduckgo.com?bridgeEndpoint=true"};
 
     @Override
 	public void configure() throws Exception {
