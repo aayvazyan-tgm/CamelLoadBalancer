@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    String camelVersion = '2.9.2'
+    String camelVersion = '2.14.1'
     compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
 //    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
 //    compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
