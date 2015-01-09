@@ -21,7 +21,7 @@ public class WeightedRoundRobinLoadBalancerRoute extends RouteBuilder {
     public void configure() throws Exception {
         System.out.println("Configure");
 
-        from("jetty:http://0.0.0.0:8082/?matchOnUriPrefix=true")
+        from("jetty:http://0.0.0.0:8081/wrr?matchOnUriPrefix=true")
                 .routeId("WeightedLOADBALANCER")
                         //.to("log:org.loadbalancer.IN?showAll=true&multiline=true")
                 .loadBalance()
