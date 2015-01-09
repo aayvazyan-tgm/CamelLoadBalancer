@@ -2,13 +2,15 @@ package org.loadbalancer;
 
 import org.apache.camel.builder.RouteBuilder;
 
-public class LoadBalancerRoute extends RouteBuilder {
+public class RoundRobinLoadBalancerRoute extends RouteBuilder {
+    private String[] destinations;
 
-
-    private String[] destinations = {
-            "http://www.google.com?bridgeEndpoint=true",
-            "http://www.bing.com?bridgeEndpoint=true",
-    };
+    /**
+     * @param destinations the destinations to Route to
+     */
+    public RoundRobinLoadBalancerRoute(String ... destinations){
+        this.destinations=destinations;
+    }
 
     @Override
     public void configure() throws Exception {

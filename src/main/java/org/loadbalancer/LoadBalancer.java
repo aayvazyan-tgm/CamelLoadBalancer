@@ -9,12 +9,18 @@ public class LoadBalancer {
     public static final Logger LOGGER = LoggerFactory.getLogger(LoadBalancer.class);
 
     public static void main(String[] args) throws Exception {
+        String[] destinations = {
+                "http://www.google.com?bridgeEndpoint=true",
+                "http://www.bing.com?bridgeEndpoint=true"
+        };
         Main main = new Main();
         main.enableHangupSupport();
         main.bind("foo", new MyBean());
-        main.addRouteBuilder(new LoadBalancerRoute());
+        main.addRouteBuilder(new RoundRobinLoadBalancerRoute(destinations));
+        main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute("2,1",destinations));
         main.run();
     }
+
     public static class MyBean {
         public void callMe() {
             System.out.println("MyBean.callMe method has been called");
