@@ -19,8 +19,8 @@ dependencies {
     compile group: 'org.apache.camel', name: 'camel-core', version: camelVersion
     compile group: 'org.apache.camel', name: 'camel-http', version: camelVersion
     compile group: 'org.apache.camel', name: 'camel-jetty', version: camelVersion
-//    compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
-    //compile 'org.apache.camel:camel-mina:2.14.1' //For tcp connections
+//  compile group: 'org.apache.camel', name: 'camel-mina2', version: camelVersion
+//  compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
 }
 
