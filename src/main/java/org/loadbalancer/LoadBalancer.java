@@ -14,8 +14,6 @@ public class LoadBalancer {
         main.bind("foo", new MyBean());
         main.addRouteBuilder(new LoadBalancerRoute());
         main.run();
-
-        //Main.main(args);
     }
     public static class MyBean {
         public void callMe() {
