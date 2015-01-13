@@ -17,7 +17,6 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
  
     public boolean process(Exchange exchange, AsyncCallback callback) {
         String body = exchange.getIn().getBody(String.class);
-        System.out.println("body"+body);
         //Get all destinations
         List<Processor> processors = getProcessors();
         LinkedList<DestinationLoad>targets=new LinkedList<DestinationLoad>();
@@ -28,8 +27,10 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                 targets.add(targetServDestLoad);
         }
         targets.sort(new DestinationLoadIntegerComparator());
-
-            targets.getFirst().processor.process(exchange);
+        targets.forEach((el)->{
+            System.out.println(el.getEvaluatedLoad()+" | "+el.destinationURI);
+        });
+        targets.getFirst().processor.process(exchange);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +48,6 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
     private class DestinationLoad {
         private Processor processor;//
         private String destinationURI; //
-        private int evaluatedLoad;
         private long freeSystemMem;
         private double cpuLoad;
 
@@ -87,11 +87,11 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         {
             DestinationLoad apk1 = (DestinationLoad) obj1;
             DestinationLoad apk2 = (DestinationLoad) obj2;
-            Integer iobj1=apk1.evaluatedLoad;
-            Integer iobj2=apk2.evaluatedLoad;
+            Integer iobj1=apk1.getEvaluatedLoad();
+            Integer iobj2=apk2.getEvaluatedLoad();
 
             int result = iobj1
-                    .compareTo(iobj1);
+                    .compareTo(iobj2);
             return result;
         }
     }
