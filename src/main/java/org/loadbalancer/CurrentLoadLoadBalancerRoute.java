@@ -14,8 +14,7 @@ public class CurrentLoadLoadBalancerRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("jetty:http://0.0.0.0:8081/rr?matchOnUriPrefix=true")
-                .routeId("LOADBALANCER")
+        from("jetty:http://0.0.0.0:8081/c?matchOnUriPrefix=true")
                         //.to("log:org.loadbalancer.IN?showAll=true&multiline=true")
                 .loadBalance(new MyCustomLoadBalancerSupport())
                 .to(destinations)

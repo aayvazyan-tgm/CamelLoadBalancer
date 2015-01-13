@@ -13,18 +13,14 @@ public class LoadBalancer {
                 "http://www.google.com?bridgeEndpoint=true",
                 "http://www.bing.com?bridgeEndpoint=true"
         };
+
+
         Main main = new Main();
         main.enableHangupSupport();
-        main.bind("foo", new MyBean());
         main.addRouteBuilder(new RoundRobinLoadBalancerRoute(destinations));
         main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute("2,1",destinations));
         main.addRouteBuilder(new CurrentLoadLoadBalancerRoute(destinations));
         main.run();
     }
 
-    public static class MyBean {
-        public void callMe() {
-            System.out.println("MyBean.callMe method has been called");
-        }
-    }
 }
