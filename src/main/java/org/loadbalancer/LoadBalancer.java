@@ -18,6 +18,7 @@ public class LoadBalancer {
         main.bind("foo", new MyBean());
         main.addRouteBuilder(new RoundRobinLoadBalancerRoute(destinations));
         main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute("2,1",destinations));
+        main.addRouteBuilder(new CurrentLoadLoadBalancerRoute(destinations));
         main.run();
     }
 
