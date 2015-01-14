@@ -1,6 +1,9 @@
 package org.loadbalancer;
 
 import org.apache.camel.main.Main;
+import org.loadbalancer.loadBalancers.CurrentLoadLoadBalancerRoute;
+import org.loadbalancer.loadBalancers.RoundRobinLoadBalancerRoute;
+import org.loadbalancer.loadBalancers.WeightedRoundRobinLoadBalancerRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
