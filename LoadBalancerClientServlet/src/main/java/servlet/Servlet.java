@@ -71,12 +71,6 @@ public class Servlet extends HttpServlet {
         Thread t=new Thread(this.finder);
         t.start();
         String[] args= {};
-        try{
-            //Start the rmi Server (The load Announcer)
-            Server.main(new String[0]);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
     /**
      * @see javax.servlet.http.HttpServlet

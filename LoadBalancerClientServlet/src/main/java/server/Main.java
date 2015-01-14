@@ -1,9 +1,19 @@
 package server;
 
+import serverLoadRmi.Server;
+
 import java.io.IOException;
 
 public class Main {
 	public static void main(final String[] args) throws IOException{
+
+		try{
+			//Start the rmi Server (The load Announcer)
+			Server.main(new String[0]);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 		if (args.length > 0) {
 			int port = 8080;
 			try {
