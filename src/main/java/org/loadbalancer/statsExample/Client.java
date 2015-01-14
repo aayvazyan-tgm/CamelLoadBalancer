@@ -18,11 +18,16 @@ public class Client {
     private ObjectInputStream ois;
     private Stats s;
 
+    private String host;
+    private int port;
+
     public Client(String host, int port) {
+        this.host= host;
+        this.port= port;
 
         try {
 
-            clientSocket= new Socket(InetAddress.getLocalHost(), port);
+            clientSocket= new Socket(host, port);
             ops= new ObjectOutputStream(clientSocket.getOutputStream());
             ois= new ObjectInputStream(clientSocket.getInputStream());
 
@@ -31,11 +36,26 @@ public class Client {
         }
 
     }
+/*
+    @Override
+    public void run() {
 
+        try {
+
+            clientSocket= new Socket(host, port);
+            ops= new ObjectOutputStream(clientSocket.getOutputStream());
+            ois= new ObjectInputStream(clientSocket.getInputStream());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+*/
     /**
      * Invokes to send the current stats from the client to the server
      */
-    public void sendStats() {
+    public Stats sendStats() {
 
         OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
 
@@ -53,5 +73,6 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return s;
     }
 }

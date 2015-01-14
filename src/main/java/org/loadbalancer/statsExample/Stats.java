@@ -1,6 +1,5 @@
 package org.loadbalancer.statsExample;
 
-import com.sun.management.OperatingSystemMXBean;
 import java.io.Serializable;
 
 /**

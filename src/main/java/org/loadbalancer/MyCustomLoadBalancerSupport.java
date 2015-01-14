@@ -75,10 +75,10 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                 e.printStackTrace();
             }
 
-            mc.cutter(erg, ": ");
+            List<String> list= mc.cutter(erg);
 
-            this.freeSystemMem=5000;
-            this.cpuLoad=50.4;
+            this.freeSystemMem= Long.valueOf( list.get(0) );
+            this.cpuLoad= Double.valueOf( list.get(1) );
 
         }
 

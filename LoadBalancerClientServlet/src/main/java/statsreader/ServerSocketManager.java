@@ -155,13 +155,9 @@ class Handler implements Runnable {  //oder 'extends Thread'
 				}
 			}	else {  //normale Client-Anforderung
 
-				// TODO create a message processor
-				//sb.append("Process CPU load: " + osBean.getProcessCpuLoad() + "\n");
-				sb.append("FreePhysicalMemorySize: " + osBean.getFreePhysicalMemorySize() + "\n");
-				sb.append("System Cpu Load: " + osBean.getSystemCpuLoad() + "\n");
-				//sb.append("Total Physical MemorySize: " + osBean.getTotalPhysicalMemorySize() + "\n" );
-				//sb.append("System Load Average: " + osBean.getSystemLoadAverage() + "\n");
-				//sb.append("---");
+				sb.append("FreePhysicalMemorySize/" + osBean.getFreePhysicalMemorySize() + "/");
+				sb.append("System Cpu Load/" + osBean.getSystemCpuLoad() + "/");
+
 				
 			}
 		} catch (IOException e) {

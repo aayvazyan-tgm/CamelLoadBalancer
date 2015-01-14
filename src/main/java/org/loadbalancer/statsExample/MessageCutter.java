@@ -1,5 +1,8 @@
 package org.loadbalancer.statsExample;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Eine Klasse die die Nachrichten vom Server verarbeitet.
  *
@@ -17,37 +20,22 @@ public class MessageCutter {
     /**
      * Eine Methode die den Text nach einer bestimmten Textsequenz herausnimmt und zurueck gibt.
      * @param str der gesamte Text
-     * @param seq die Sequenz in dem Text
-     * @return
+     * @return eine Liste die alle Werte enthaelt
      */
-    public String cutter(String str, String seq) {
-        String result="";
+    public List<String> cutter(String str) {
+        List<String> l= new ArrayList<String>();
 
         StringBuilder sb= new StringBuilder(str);
 
-        int index= sb.indexOf(seq);
-        result= sb.substring(index+2);
+        String[] ar= str.split("/");
 
-        return result;
-    }
+        for(int i=0;i<ar.length;i++) {
+            if(ar[i].charAt(0) >= '0' && ar[i].charAt(0) <= '9' ) {
+                l.add(ar[i]);
+                System.out.println("----> " + ar[i]);
+            }
+        }
 
-    /**
-     * Wandelt den Wert in eine Zahl um.
-     * @param str der Text von dem die Sequenzheraus geschnitten werden soll
-     * @param seq die Sequenz die angibt ab wann die Zahlen beginnen
-     * @return den die ganzzahlige Zahl
-     */
-    public int getIntValue(String str, String seq) {
-        return Integer.valueOf(this.cutter(str, seq));
-    }
-
-    /**
-     * Wandelt den Wert in ein Gleitkommazahl um.
-     * @param str der Text von dem die Sequenzheraus geschnitten werden soll
-     * @param seq die Sequenz die angibt ab wann die Zahlen beginnen
-     * @return die Gleitkommazahl
-     */
-    public double getDoubleValue(String str, String seq) {
-        return Double.valueOf(this.cutter(str, seq));
+        return l;
     }
 }
