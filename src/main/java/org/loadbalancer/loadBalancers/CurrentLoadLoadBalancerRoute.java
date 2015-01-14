@@ -1,24 +1,22 @@
-package org.loadbalancer;
+package org.loadbalancer.loadBalancers;
 
 import org.apache.camel.builder.RouteBuilder;
 
-public class RoundRobinLoadBalancerRoute extends RouteBuilder {
+public class CurrentLoadLoadBalancerRoute extends RouteBuilder {
     private String[] destinations;
 
     /**
      * @param destinations the destinations to Route to
      */
-    public RoundRobinLoadBalancerRoute(String ... destinations){
+    public CurrentLoadLoadBalancerRoute(String... destinations){
         this.destinations=destinations;
     }
 
     @Override
     public void configure() throws Exception {
-        from("jetty:http://0.0.0.0:8081/rr?matchOnUriPrefix=true")
-                .routeId("LOADBALANCER")
+        from("jetty:http://0.0.0.0:8081/c?matchOnUriPrefix=true")
                         //.to("log:org.loadbalancer.IN?showAll=true&multiline=true")
-                .loadBalance()
-                .roundRobin()
+                .loadBalance(new MyCustomLoadBalancerSupport())
                 .to(destinations)
         ;
     }

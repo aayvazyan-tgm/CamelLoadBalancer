@@ -1,4 +1,4 @@
-package org.loadbalancer;
+package org.loadbalancer.loadBalancers;
 
 import api.ServerLoad;
 import org.apache.camel.AsyncCallback;

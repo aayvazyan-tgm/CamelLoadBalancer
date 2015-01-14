@@ -1,4 +1,4 @@
-package org.loadbalancer;
+package org.loadbalancer.loadBalancers;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.loadbalancer.WeightedRoundRobinLoadBalancer;
