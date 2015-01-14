@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Servlet finds Primes using a Finder in a thread and generates the html code
@@ -19,7 +20,7 @@ import java.util.Date;
 public class Servlet extends HttpServlet {
     private Finder finder;
     private Date startDate;
-
+    private int randomServerIdentifier;
     /**
      * @see javax.servlet.http.HttpServlet
      */
@@ -44,7 +45,7 @@ public class Servlet extends HttpServlet {
         out.println("<html><head><title></title></head><body>");
         //this is where the fun part starts
         //The title
-        out.println("<div align=\"center\"><h1>Prime Searcher</h1>");
+        out.println("<div align=\"center\"><h1>Prime Searcher: "+randomServerIdentifier+"</h1>");
         //The upper border
         out.println("<hr style=\"color:blue; background-color:blue; height:15px; width:80%;\">");
         //The start date
@@ -63,6 +64,7 @@ public class Servlet extends HttpServlet {
      * @see javax.servlet.http.HttpServlet
      */
     public void init() throws ServletException {
+        randomServerIdentifier=new Random().nextInt(20);
         this.startDate=new Date(System.currentTimeMillis());
         super.init();
         this.finder=new Finder(new BigIntFinder());
