@@ -1,8 +1,6 @@
 package org.loadbalancer;
 
 import org.apache.camel.main.Main;
-import org.loadbalancer.statsExample.Client;
-import org.loadbalancer.statsExample.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
