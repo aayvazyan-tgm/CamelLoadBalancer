@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
 
@@ -63,11 +64,17 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
 
             System.out.println("Destination Host: " + destinationHost);
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             ServerLoad serverLoad = RmiClient.getServerLoad(destinationHost);
 
             this.freeSystemMem = serverLoad.freeSystemMem;
             this.cpuLoad = serverLoad.cpuLoad;
-            this.diskUsage = 0.00;
+            this.diskUsage=serverLoad.diskUsage;
         }
 
         /**
@@ -75,15 +82,20 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
          *
          * @return
          */
-        public int evaluateLoad() {
-            int result = 0;
+        public double evaluateLoad() {
+            double result = 0;
             result += cpuLoad;
             if (freeSystemMem < 1024 * 100) result += 80;
             if (freeSystemMem < 1024 * 20) result += 100;
+            if (diskUsage>50)result+=10;
+            if (diskUsage>80)result+=40;
+            if (diskUsage>90)result+=150;
+            if (diskUsage>95)result+=200;
+            System.out.println(diskUsage);
             return result;
         }
 
-        public int getEvaluatedLoad() {
+        public double getEvaluatedLoad() {
             return evaluateLoad();
         }
     }
@@ -92,8 +104,8 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         public int compare(Object obj1, Object obj2) {
             DestinationLoad apk1 = (DestinationLoad) obj1;
             DestinationLoad apk2 = (DestinationLoad) obj2;
-            Integer iobj1 = apk1.getEvaluatedLoad();
-            Integer iobj2 = apk2.getEvaluatedLoad();
+            Double iobj1 = apk1.getEvaluatedLoad();
+            Double iobj2 = apk2.getEvaluatedLoad();
 
             int result = iobj1.compareTo(iobj2);
             return result;
