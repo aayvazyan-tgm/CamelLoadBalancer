@@ -1,2 +1,3 @@
 rootProject.name = 'Camel Load Balancer'
+include 'LoadBalancerClientServlet'
 
