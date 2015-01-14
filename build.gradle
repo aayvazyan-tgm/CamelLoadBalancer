@@ -2,7 +2,6 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'jetty'
 
 archivesBaseName = 'apache-camel-Load-Balancer'
 mainClassName = 'org.loadbalancer.LoadBalancer'
@@ -22,6 +21,7 @@ dependencies {
 //  compile group: 'org.apache.camel', name: 'camel-mina2', version: camelVersion
 //  compile group: 'org.apache.camel', name: 'camel-spring', version: camelVersion
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.6.5'
+    compile 'org.eclipse.jetty:jetty-webapp:9.3.0.M1'
 }
 
 task packJarWithLibs(type: Jar, dependsOn: jar) {
