@@ -7,6 +7,7 @@ import org.apache.camel.management.InstrumentationProcessor;
 import org.apache.camel.processor.SendProcessor;
 import org.apache.camel.processor.interceptor.DefaultChannel;
 import org.apache.camel.processor.loadbalancer.LoadBalancerSupport;
+import org.loadbalancer.statsExample.*;
 
 import javax.activation.DataHandler;
 import java.net.MalformedURLException;
@@ -51,6 +52,8 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         private long freeSystemMem;
         private double cpuLoad;
 
+        private Stats stats;
+
         public DestinationLoad(Processor processor) throws MalformedURLException {
             this.processor = processor;
             this.destinationURI = extractEndpoint(processor.toString());
@@ -60,8 +63,23 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
 
             //TODO Helmuth FETCH FROM SERVER (destinationHost)
 
+            System.out.println("Destination Host" + destinationHost);
+
+            ClientSocket cl= new ClientSocket("localhost", 8888, false);
+            MessageCutter mc= new MessageCutter();
+            String erg= "";
+
+            try {
+                erg= cl.worker();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            mc.cutter(erg, ": ");
+
             this.freeSystemMem=5000;
             this.cpuLoad=50.4;
+
         }
 
         /**

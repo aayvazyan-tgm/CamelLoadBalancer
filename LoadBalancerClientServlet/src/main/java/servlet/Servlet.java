@@ -1,12 +1,15 @@
 package servlet;
 
 import FinderStrategies.BigIntFinder;
+import statsreader.ServerSocketManager;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import javax.servlet.*;
-import javax.servlet.http.*;
 
 /**
  * Servlet finds Primes using a Finder in a thread and generates the html code
@@ -16,7 +19,6 @@ import javax.servlet.http.*;
 public class Servlet extends HttpServlet {
     private Finder finder;
     private Date startDate;
-
 
     /**
      * @see javax.servlet.http.HttpServlet
@@ -66,6 +68,14 @@ public class Servlet extends HttpServlet {
         this.finder=new Finder(new BigIntFinder());
         Thread t=new Thread(this.finder);
         t.start();
+        String[] args= {};
+        try {
+
+            // set the correct port number
+            ServerSocketManager ssm= new ServerSocketManager(args, 8888);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     /**
      * @see javax.servlet.http.HttpServlet
