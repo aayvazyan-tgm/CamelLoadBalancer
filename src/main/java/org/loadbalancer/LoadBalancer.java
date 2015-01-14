@@ -10,8 +10,8 @@ public class LoadBalancer {
 
     public static void main(String[] args) throws Exception {
         String[] destinations = {
-                "http://localhost:8082?bridgeEndpoint=true",
-                "http://localhost:8083?bridgeEndpoint=true"
+                "http://localhost:8083?bridgeEndpoint=true",
+                "http://localhost:8084?bridgeEndpoint=true"
         };
 
         Main main = new Main();
