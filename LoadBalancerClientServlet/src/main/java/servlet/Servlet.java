@@ -1,7 +1,7 @@
 package servlet;
 
 import FinderStrategies.BigIntFinder;
-import statsreader.ServerSocketManager;
+import serverLoadRmi.Server;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,11 +71,10 @@ public class Servlet extends HttpServlet {
         Thread t=new Thread(this.finder);
         t.start();
         String[] args= {};
-        try {
-
-            // set the correct port number
-            ServerSocketManager ssm= new ServerSocketManager(args, 8888);
-        } catch (IOException e) {
+        try{
+            //Start the rmi Server (The load Announcer)
+            Server.main(new String[0]);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
