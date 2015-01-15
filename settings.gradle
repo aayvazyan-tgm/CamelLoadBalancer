@@ -1,5 +1,8 @@
 rootProject.name = 'Camel Load Balancer'
+
 include 'LoadBalancerClientServlet'
 
 include 'RMIApi'
+
+include 'capacityDrainer'
 
