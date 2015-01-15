@@ -8,8 +8,11 @@ public class Drainer {
     public static void main (String args[]){
 
         Thread t= null;
+
+        Load load= new Load();
+
         try {
-            t= new Thread(new Load());
+            t= new Thread(load);
             t.start();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -21,7 +24,7 @@ public class Drainer {
             e.printStackTrace();
         }
 
-        t.stop();
+        load.stop();
 
     }
 }
