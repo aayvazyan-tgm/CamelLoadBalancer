@@ -4,6 +4,7 @@ import api.ServerLoad;
 import org.apache.camel.AsyncCallback;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.component.http.HttpMessage;
 import org.apache.camel.processor.loadbalancer.LoadBalancerSupport;
 import org.loadbalancer.rmi.RmiClient;
 
@@ -14,7 +15,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
-    private HashMap<String,Processor> stickyUserMapping=new HashMap<String,Processor>();
+    private HashMap<Integer,Processor> stickyUserMapping=new HashMap<Integer,Processor>();
 
     public boolean process(Exchange exchange, AsyncCallback callback) {
         String body = exchange.getIn().getBody(String.class);
@@ -22,11 +23,14 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         List<Processor> processors = getProcessors();
         LinkedList<DestinationLoad> targets = new LinkedList<DestinationLoad>();
         //Iterate over the destinations, evaluate their load and use the least busy destination
-        System.out.println(exchange.getExchangeId().substring(0, exchange.getExchangeId().lastIndexOf("-")));
-        String userID=exchange.getExchangeId().substring(0, exchange.getExchangeId().lastIndexOf("-"));
+        String remoteIP=exchange.getIn(HttpMessage.class).getRequest().getRemoteAddr();
+        int userIDHash=+Objects.hash(
+                exchange.getIn().getHeader("User-Agent"),
+                remoteIP
+                );
         try {
-            if(stickyUserMapping.containsKey(userID)){
-                stickyUserMapping.get(userID).process(exchange);
+            if(stickyUserMapping.containsKey(userIDHash)){
+                stickyUserMapping.get(userIDHash).process(exchange);
             }else{
                 for (Processor currentServer : processors) {
                     DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
@@ -37,7 +41,7 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                     System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
                 });
                 Processor leastBusyServer=targets.getFirst().processor;
-                stickyUserMapping.put(userID,leastBusyServer);
+                stickyUserMapping.put(userIDHash,leastBusyServer);
                 leastBusyServer.process(exchange);
             }
         } catch (Exception e) {
