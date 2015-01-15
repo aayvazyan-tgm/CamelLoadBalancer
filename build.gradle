@@ -25,14 +25,6 @@ dependencies {
     compile project(':RMIApi')
 }
 
-task packJarWithLibs(type: Jar, dependsOn: jar) {
-    from files(sourceSets.main.output.classesDir)
-    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
-}
-
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
