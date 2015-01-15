@@ -4,6 +4,7 @@ import api.ServerLoad;
 import org.apache.camel.AsyncCallback;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.component.http.HttpMessage;
 import org.apache.camel.processor.loadbalancer.LoadBalancerSupport;
 import org.loadbalancer.rmi.RmiClient;
 
@@ -11,12 +12,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
+    private HashMap<Integer,Processor> stickyUserMapping=new HashMap<Integer,Processor>();
 
     public boolean process(Exchange exchange, AsyncCallback callback) {
         String body = exchange.getIn().getBody(String.class);
@@ -24,16 +23,27 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         List<Processor> processors = getProcessors();
         LinkedList<DestinationLoad> targets = new LinkedList<DestinationLoad>();
         //Iterate over the destinations, evaluate their load and use the least busy destination
+        String remoteIP=exchange.getIn(HttpMessage.class).getRequest().getRemoteAddr();
+        int userIDHash=+Objects.hash(
+                exchange.getIn().getHeader("User-Agent"),
+                remoteIP
+                );
         try {
-            for (Processor currentServer : processors) {
-                DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
-                targets.add(targetServDestLoad);
+            if(stickyUserMapping.containsKey(userIDHash)){
+                stickyUserMapping.get(userIDHash).process(exchange);
+            }else{
+                for (Processor currentServer : processors) {
+                    DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
+                    targets.add(targetServDestLoad);
+                }
+                targets.sort(new DestinationLoadIntegerComparator());
+                targets.forEach((el) -> {
+                    System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
+                });
+                Processor leastBusyServer=targets.getFirst().processor;
+                stickyUserMapping.put(userIDHash,leastBusyServer);
+                leastBusyServer.process(exchange);
             }
-            targets.sort(new DestinationLoadIntegerComparator());
-            targets.forEach((el) -> {
-                System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
-            });
-            targets.getFirst().processor.process(exchange);
         } catch (Exception e) {
             e.printStackTrace();
         }
