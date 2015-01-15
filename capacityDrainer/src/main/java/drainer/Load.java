@@ -1,4 +1,4 @@
-package loadgenarator;
+package load;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.util.Random;
  *
  * Created by helmuthbrunner on 15/01/15.
  */
-public class Load {
+public class Load implements Runnable, Stoppable {
 
     private boolean running;
     private File f;
@@ -28,15 +28,24 @@ public class Load {
         r= new Random();
     }
 
+    @Override
     public void run() {
         while (running) {
 
-            bi2 = bi.pow(33 * r.nextInt(3333));
+            bi2 = bi.pow(33 * r.nextInt(33));
             try {
                 raf.writeUTF(bi2.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void stop() {
+        running= false;
+
+        raf.close();
+        f.close();
     }
 }
