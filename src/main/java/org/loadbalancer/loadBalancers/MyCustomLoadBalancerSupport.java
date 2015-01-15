@@ -11,12 +11,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
+    private HashMap<String,Processor> stickyUserMapping=new HashMap<String,Processor>();
 
     public boolean process(Exchange exchange, AsyncCallback callback) {
         String body = exchange.getIn().getBody(String.class);
@@ -24,16 +22,24 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         List<Processor> processors = getProcessors();
         LinkedList<DestinationLoad> targets = new LinkedList<DestinationLoad>();
         //Iterate over the destinations, evaluate their load and use the least busy destination
+        System.out.println(exchange.getExchangeId().substring(0, exchange.getExchangeId().lastIndexOf("-")));
+        String userID=exchange.getExchangeId().substring(0, exchange.getExchangeId().lastIndexOf("-"));
         try {
-            for (Processor currentServer : processors) {
-                DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
-                targets.add(targetServDestLoad);
+            if(stickyUserMapping.containsKey(userID)){
+                stickyUserMapping.get(userID).process(exchange);
+            }else{
+                for (Processor currentServer : processors) {
+                    DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
+                    targets.add(targetServDestLoad);
+                }
+                targets.sort(new DestinationLoadIntegerComparator());
+                targets.forEach((el) -> {
+                    System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
+                });
+                Processor leastBusyServer=targets.getFirst().processor;
+                stickyUserMapping.put(userID,leastBusyServer);
+                leastBusyServer.process(exchange);
             }
-            targets.sort(new DestinationLoadIntegerComparator());
-            targets.forEach((el) -> {
-                System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
-            });
-            targets.getFirst().processor.process(exchange);
         } catch (Exception e) {
             e.printStackTrace();
         }
