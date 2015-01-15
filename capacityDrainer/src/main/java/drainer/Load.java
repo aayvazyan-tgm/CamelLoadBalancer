@@ -32,7 +32,7 @@ public class Load implements Runnable, Stoppable {
     public void run() {
         while (running) {
 
-            bi2 = bi.pow(33 * r.nextInt(33));
+            bi2 = bi.pow(11 * r.nextInt(5));
             try {
                 raf.writeUTF(bi2.toString());
             } catch (IOException e) {
