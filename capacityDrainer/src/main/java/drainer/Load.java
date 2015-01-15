@@ -39,16 +39,16 @@ public class Load implements Runnable, Stoppable {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void stop() {
-        running= false;
 
         try {
             raf.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop() {
+        running= false;
     }
 }
