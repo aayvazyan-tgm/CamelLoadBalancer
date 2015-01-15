@@ -30,8 +30,10 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                 );
         try {
             if(stickyUserMapping.containsKey(userIDHash)){
+                System.out.println("User with ID: "+userIDHash+" is being redirected to his bound server");
                 stickyUserMapping.get(userIDHash).process(exchange);
             }else{
+                System.out.println("Finding a Server for user: "+userIDHash);
                 for (Processor currentServer : processors) {
                     DestinationLoad targetServDestLoad = new DestinationLoad(currentServer);
                     targets.add(targetServDestLoad);
@@ -42,6 +44,7 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                 });
                 Processor leastBusyServer=targets.getFirst().processor;
                 stickyUserMapping.put(userIDHash,leastBusyServer);
+                System.out.println("User with ID: "+userIDHash+" is now Bound to the currently least busy server: "+targets.getFirst().destinationURI);
                 leastBusyServer.process(exchange);
             }
         } catch (Exception e) {
