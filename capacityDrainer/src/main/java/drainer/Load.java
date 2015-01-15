@@ -45,7 +45,10 @@ public class Load implements Runnable, Stoppable {
     public void stop() {
         running= false;
 
-        raf.close();
-        f.close();
+        try {
+            raf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

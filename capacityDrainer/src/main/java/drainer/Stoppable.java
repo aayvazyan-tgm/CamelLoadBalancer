@@ -1,4 +1,4 @@
-package load;
+package drainer;
 
 /**
  * Created by helmuthbrunner on 15/01/15.

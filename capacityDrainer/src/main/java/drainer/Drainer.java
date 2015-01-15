@@ -1,5 +1,7 @@
 package drainer;
 
+import java.io.FileNotFoundException;
+
 /**
  * @author Ari Michael Ayvazyan
  * @version 15.01.2015
@@ -9,14 +11,15 @@ public class Drainer {
 
         Thread t= null;
 
-        Load load= new Load();
-
+        Load load= null;
         try {
-            t= new Thread(load);
-            t.start();
+            load = new Load();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        t= new Thread(load);
+        t.start();
 
         try {
             Thread.sleep(10000);
