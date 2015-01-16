@@ -15,6 +15,11 @@ public class RemoteListener extends UnicastRemoteObject implements IRemoteListen
 
     }
 
+    /**
+     *
+     * @return returns the load of the machine that it is executed
+     * @throws RemoteException
+     */
     @Override
     public ServerLoad getServerLoad() throws RemoteException {
         ServerLoad serverLoad=new ServerLoad();
@@ -28,11 +33,11 @@ public class RemoteListener extends UnicastRemoteObject implements IRemoteListen
         ///Disk usage
         ///
         File f= null;
-        if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
+        if(System.getProperty("os.name").toLowerCase().contains("mac")) {
             f= new File("/");
-        }else if(System.getProperty("os.name").toLowerCase().indexOf("linux") >= 0) {
+        }else if(System.getProperty("os.name").toLowerCase().contains("linux")) {
             f= new File("/");
-        }else if(System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0) {
+        }else if(System.getProperty("os.name").toLowerCase().contains("windows")) {
             f= new File("C:");
         }else {
             System.out.println("Go Home, your OS is not supported");

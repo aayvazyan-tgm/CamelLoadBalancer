@@ -14,9 +14,16 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
+/**
+ * @author Ari Michael Ayvazyan
+ * @version 14.01.2015
+ */
 public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
     private HashMap<Integer,Processor> stickyUserMapping=new HashMap<Integer,Processor>();
 
+    /**
+     * @see org.apache.camel.processor.loadbalancer.LoadBalancerSupport
+     */
     public boolean process(Exchange exchange, AsyncCallback callback) {
         String body = exchange.getIn().getBody(String.class);
         //Get all destinations
@@ -54,6 +61,11 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         return true;
     }
 
+    /**
+     *
+     * @param inp the Endpoint from which the uri should be extracted
+     * @return the URI as a String
+     */
     public static String extractEndpoint(String inp) {
         String endPointURIString = inp;
         endPointURIString = endPointURIString.substring(endPointURIString.indexOf("Endpoint[") + 9, endPointURIString.length());
@@ -61,6 +73,9 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         return endPointURIString;
     }
 
+    /**
+     * Defines the load of a Server
+     */
     private class DestinationLoad {
         private Processor processor;
         private String destinationURI;
@@ -68,6 +83,13 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         private double cpuLoad;
         private double diskUsage;
 
+        /**
+         *
+         * @param processor the server representation
+         * @throws MalformedURLException
+         * @throws RemoteException
+         * @throws NotBoundException
+         */
         public DestinationLoad(Processor processor) throws MalformedURLException, RemoteException, NotBoundException {
             this.processor = processor;
             this.destinationURI = extractEndpoint(processor.toString());
@@ -91,9 +113,9 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         }
 
         /**
-         * low load => low value
+         * low load results in a low value
          *
-         * @return
+         * @return a rating where a high value represents a high load
          */
         public double evaluateLoad() {
             double result = 0;
@@ -113,6 +135,9 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
         }
     }
 
+    /**
+     * compares the load of the Servers
+     */
     private class DestinationLoadIntegerComparator implements Comparator {
         public int compare(Object obj1, Object obj2) {
             DestinationLoad apk1 = (DestinationLoad) obj1;

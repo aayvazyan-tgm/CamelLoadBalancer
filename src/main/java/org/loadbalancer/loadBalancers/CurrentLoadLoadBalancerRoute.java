@@ -1,7 +1,10 @@
 package org.loadbalancer.loadBalancers;
 
 import org.apache.camel.builder.RouteBuilder;
-
+/**
+ * @author Ari Michael Ayvazyan
+ * @version 14.01.2015
+ */
 public class CurrentLoadLoadBalancerRoute extends RouteBuilder {
     private String[] destinations;
 

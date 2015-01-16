@@ -6,7 +6,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlet.Servlet;
 
-
+/**
+ * Embeds a Jetty server to host the Servlet.
+ */
 public class JettyEmbeddedRunner {
 	public void startServer(int port) {
 		try {

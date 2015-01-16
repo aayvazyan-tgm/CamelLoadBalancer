@@ -5,6 +5,10 @@ import org.apache.camel.processor.loadbalancer.WeightedRoundRobinLoadBalancer;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ari Michael Ayvazyan
+ * @version 14.01.2015
+ */
 public class WeightedRoundRobinLoadBalancerRoute extends RouteBuilder {
     private String ratio;
     private String[] destinations;

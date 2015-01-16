@@ -20,6 +20,10 @@ public class Load implements Runnable, Stoppable {
     private RandomAccessFile raf;
     private Random r;
 
+    /**
+     * Causes some load on run()
+     * @throws FileNotFoundException
+     */
     public Load() throws FileNotFoundException {
         running= true;
         bi= new BigInteger(String.valueOf(Long.MAX_VALUE));

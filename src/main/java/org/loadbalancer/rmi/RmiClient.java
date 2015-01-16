@@ -8,6 +8,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+/**
+ * @author Ari Michael Ayvazyan
+ * @version 14.01.2015
+ */
 public class RmiClient {
     /**
      * //@param serverSocket should have the format hostAdress:port - example: localhost:1234
