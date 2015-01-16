@@ -35,10 +35,16 @@ public class LoadBalancer {
             }
         }
 
+        //generate weight for the weighted round robin destinations
+        String weight="2";
+        for (int i = 1; i <destinations.length; i++) {
+            weight+=",1";
+        }
+
         Main main = new Main();
         main.enableHangupSupport();
         main.addRouteBuilder(new RoundRobinLoadBalancerRoute(destinations));
-        main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute("2,1",destinations));
+        main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute(weight,destinations));
         main.addRouteBuilder(new CurrentLoadLoadBalancerRoute(destinations));
         main.run();
         System.out.println("Started Load Balancer");
