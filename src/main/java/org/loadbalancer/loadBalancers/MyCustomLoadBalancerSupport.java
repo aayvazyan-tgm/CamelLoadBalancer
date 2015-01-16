@@ -46,9 +46,9 @@ public class MyCustomLoadBalancerSupport extends LoadBalancerSupport {
                     targets.add(targetServDestLoad);
                 }
                 targets.sort(new DestinationLoadIntegerComparator());
-                targets.forEach((el) -> {
+                for (DestinationLoad el : targets) {
                     System.out.println(el.getEvaluatedLoad() + " | " + el.destinationURI);
-                });
+                }
                 Processor leastBusyServer=targets.getFirst().processor;
                 stickyUserMapping.put(userIDHash,leastBusyServer);
                 System.out.println("User with ID: "+userIDHash+" is now Bound to the currently least busy server: "+targets.getFirst().destinationURI);
