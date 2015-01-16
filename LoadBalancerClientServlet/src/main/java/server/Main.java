@@ -28,5 +28,6 @@ public class Main {
 			new JettyEmbeddedRunner().startServer(8083);
 			new JettyEmbeddedRunner().startServer(8084);
 		}
+		System.out.println("Started Servlet/s");
 	}
 }

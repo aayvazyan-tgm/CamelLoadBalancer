@@ -41,6 +41,7 @@ public class LoadBalancer {
         main.addRouteBuilder(new WeightedRoundRobinLoadBalancerRoute("2,1",destinations));
         main.addRouteBuilder(new CurrentLoadLoadBalancerRoute(destinations));
         main.run();
+        System.out.println("Started Load Balancer");
     }
 
 }
